@@ -13,13 +13,13 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @Title Makesweet golang server
-// @Version 1.0
-// @Description	A golang server to create gifs from images.
-// @Accept mpfd
-// @Produce json image/gif
-// @Host localhost:8080
-// @BasePath /api
+//	@Title			Makesweet golang server
+//	@Version		1.0
+//	@Description	A golang server to create gifs from images.
+//	@Accept			mpfd
+//	@Produce		json image/gif
+//	@Host			localhost:8080
+//	@BasePath		/api
 func main() {
 	imageFolderPath := os.Getenv("SAVE_IMAGE_FOLDER")
 	if len(strings.TrimSpace(imageFolderPath)) == 0 {
@@ -47,6 +47,7 @@ func main() {
 	gifGroup.POST("/circuit", handlers.CreateCircuitGif)
 	gifGroup.POST("/nesting-doll", handlers.CreateDollGif)
 	gifGroup.POST("/flying-bear", handlers.CreateBearGif)
+	gifGroup.POST("/custom", handlers.CreateFromCustom)
 
 	apiGroup.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
