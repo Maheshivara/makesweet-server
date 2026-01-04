@@ -12,16 +12,17 @@ import (
 )
 
 // CreateCircuit
-// @Summary Create a flying bear gif
-// @Description Use image from form to make a flying bear gif
-// @Tags Gif
-// @Accept mpfd
-// @Param image formData file true "A png or jpg image"
-// @Produce json image/gif
-// @Success 200 {file} binary "Generated Gif"
-// @Fail 400 {string} "Fail to load image from form"
-// @Fail 500 {string} "Fail to generate gif"
-// @Router /gif/flying-bear [post]
+//
+//	@Summary		Create a flying bear gif
+//	@Description	Use image from form to make a flying bear gif
+//	@Tags			Gif
+//	@Accept			mpfd
+//	@Param			image	formData	file	true	"A png or jpg image"
+//	@Produce		json image/gif
+//	@Success		200	{file}		binary	"Generated Gif"
+//	@Failure		400	{string}	string	"Fail to load image from form"
+//	@Failure		500	{string}	string	"Fail to generate gif"
+//	@Router			/gif/flying-bear [post]
 func CreateBearGif(ctx *gin.Context) {
 	imageFilePath, err := utils.SaveImageFromContext(ctx, "image")
 	if err != nil {
