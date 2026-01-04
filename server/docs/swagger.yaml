@@ -26,6 +26,14 @@ paths:
           description: Generated Gif
           schema:
             type: file
+        "400":
+          description: Fail to load image from form
+          schema:
+            type: string
+        "500":
+          description: Fail to generate gif
+          schema:
+            type: string
       summary: Create a billboard gif
       tags:
       - Gif
@@ -47,7 +55,51 @@ paths:
           description: Generated Gif
           schema:
             type: file
+        "400":
+          description: Fail to load image from form
+          schema:
+            type: string
+        "500":
+          description: Fail to generate gif
+          schema:
+            type: string
       summary: Create a circuit board gif
+      tags:
+      - Gif
+  /gif/custom:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Use images and a template from form to make a custom gif
+      parameters:
+      - description: A png or jpg image array
+        in: formData
+        items:
+          type: file
+        name: images
+        required: true
+        type: array
+      - description: A zip template file
+        in: formData
+        name: template
+        required: true
+        type: file
+      produces:
+      - json image/gif
+      responses:
+        "200":
+          description: Generated Gif
+          schema:
+            type: file
+        "400":
+          description: Fail to load images from form
+          schema:
+            type: string
+        "500":
+          description: Fail to generate gif
+          schema:
+            type: string
+      summary: Create a custom gif
       tags:
       - Gif
   /gif/flag:
@@ -68,6 +120,14 @@ paths:
           description: Generated Gif
           schema:
             type: file
+        "400":
+          description: Fail to load image from formData
+          schema:
+            type: string
+        "500":
+          description: Fail to generate gif
+          schema:
+            type: string
       summary: Create a flag gif
       tags:
       - Gif
@@ -89,6 +149,14 @@ paths:
           description: Generated Gif
           schema:
             type: file
+        "400":
+          description: Fail to load image from form
+          schema:
+            type: string
+        "500":
+          description: Fail to generate gif
+          schema:
+            type: string
       summary: Create a flying bear gif
       tags:
       - Gif
@@ -109,6 +177,14 @@ paths:
         name: image-right
         required: true
         type: file
+      - default: standard
+        description: Variant of heart locket gif
+        enum:
+        - standard
+        - christmas
+        in: formData
+        name: variant
+        type: string
       produces:
       - json image/gif
       responses:
@@ -116,6 +192,14 @@ paths:
           description: Generated Gif
           schema:
             type: file
+        "400":
+          description: Fail to load image from form
+          schema:
+            type: string
+        "500":
+          description: Fail to generate gif
+          schema:
+            type: string
       summary: Create a heart locket gif
       tags:
       - Gif
@@ -147,6 +231,14 @@ paths:
           description: Generated Gif
           schema:
             type: file
+        "400":
+          description: Fail to load images from formData
+          schema:
+            type: string
+        "500":
+          description: Fail to generate gif
+          schema:
+            type: string
       summary: Create a nesting doll gif
       tags:
       - Gif

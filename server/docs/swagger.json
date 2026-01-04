@@ -43,6 +43,18 @@
                         "schema": {
                             "type": "file"
                         }
+                    },
+                    "400": {
+                        "description": "Fail to load image from form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Fail to generate gif",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
@@ -74,6 +86,72 @@
                         "description": "Generated Gif",
                         "schema": {
                             "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Fail to load image from form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Fail to generate gif",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/gif/custom": {
+            "post": {
+                "description": "Use images and a template from form to make a custom gif",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "json image/gif"
+                ],
+                "tags": [
+                    "Gif"
+                ],
+                "summary": "Create a custom gif",
+                "parameters": [
+                    {
+                        "type": "array",
+                        "items": {
+                            "type": "file"
+                        },
+                        "description": "A png or jpg image array",
+                        "name": "images",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "file",
+                        "description": "A zip template file",
+                        "name": "template",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Generated Gif",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Fail to load images from form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Fail to generate gif",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -107,6 +185,18 @@
                         "schema": {
                             "type": "file"
                         }
+                    },
+                    "400": {
+                        "description": "Fail to load image from formData",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Fail to generate gif",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
@@ -139,6 +229,18 @@
                         "schema": {
                             "type": "file"
                         }
+                    },
+                    "400": {
+                        "description": "Fail to load image from form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Fail to generate gif",
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 }
             }
@@ -170,6 +272,17 @@
                         "name": "image-right",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "enum": [
+                            "standard",
+                            "christmas"
+                        ],
+                        "type": "string",
+                        "default": "standard",
+                        "description": "Variant of heart locket gif",
+                        "name": "variant",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -177,6 +290,18 @@
                         "description": "Generated Gif",
                         "schema": {
                             "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Fail to load image from form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Fail to generate gif",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
@@ -223,6 +348,18 @@
                         "description": "Generated Gif",
                         "schema": {
                             "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Fail to load images from formData",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Fail to generate gif",
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 }
