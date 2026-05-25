@@ -84,7 +84,7 @@ func (c *commandBuilder) reanimateUsingTemplate(templatePath string, imagePaths 
 	{
 		command := BaseCommand
 		if len(command) == 0 {
-			command = "/makesweet-py"
+			command = "/bin/makesweet-py"
 		}
 		args := []string{
 			"-S",
