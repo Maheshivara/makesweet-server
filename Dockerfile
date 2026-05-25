@@ -13,8 +13,7 @@ FROM python:3.14-slim AS makesweet_builder
 RUN apt-get update && \
   apt-get install -y \
   pipx \
-  binutils \
-  patchelf && \
+  binutils &&\
   apt-get autoremove -y && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/*
@@ -22,7 +21,6 @@ RUN apt-get update && \
 ENV PATH="/root/.local/bin:${PATH}"
 
 RUN pipx install uv
-RUN pipx install staticx
 
 WORKDIR /app
 
@@ -32,7 +30,6 @@ RUN uv sync --frozen
 COPY ./makesweet-py/src/ ./src/
 COPY ./makesweet-py/makesweet-py.spec ./
 RUN uv run pyinstaller makesweet-py.spec
-RUN staticx dist/makesweet-py dist/makesweet-py-static --strip
 
 
 FROM gcr.io/distroless/cc AS final
@@ -40,7 +37,7 @@ COPY --from=base /empty /tmp
 
 WORKDIR /bin
 COPY --from=server_builder /app/makesweet-server ./makesweet-server
-COPY --from=makesweet_builder /app/dist/makesweet-py-static ./makesweet-py
+COPY --from=makesweet_builder /app/dist/makesweet-py ./makesweet-py
 COPY ./templates/ /templates/
 
 EXPOSE 8080
