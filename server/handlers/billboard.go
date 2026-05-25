@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"makesweet/messages"
 	"makesweet/utils"
 	"net/http"
 	"os"
@@ -18,6 +19,7 @@ import (
 //	@Tags			Gif
 //	@Accept			mpfd
 //	@Param			image	formData	file	true	"A png or jpg image"
+//	@Param			mode	formData	string	false	"Gif mode, can be 'fast' or 'slow', default is 'slow'"	Enums(fast,slow)	default(slow)
 //	@Produce		json image/gif
 //	@Success		200	{file}		binary	"Generated Gif"
 //	@Failure		400	{string}	string	"Fail to load image from form"
@@ -26,33 +28,45 @@ import (
 func CreateBillboardGif(ctx *gin.Context) {
 	imageFilePath, err := utils.SaveImageFromContext(ctx, "image")
 	if err != nil {
-		if err.Error() == "Fail to save 'image' in the server" {
+		expectedErrMsg := fmt.Sprintf(messages.FailToSaveImageInServer, "image")
+		if err.Error() == expectedErrMsg {
 			ctx.JSON(http.StatusInternalServerError, err.Error())
 			return
 		}
 		ctx.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
-	defer os.Remove(imageFilePath)
+	defer func() {
+		err := os.Remove(imageFilePath)
+		if err != nil {
+			log.Error(messages.FailToRemoveImageFile, "err", err)
+		}
+	}()
 
-	destFolderPath := os.Getenv("SAVE_IMAGE_FOLDER")
+	destDirPath := os.Getenv("SAVE_IMAGE_FOLDER")
 	outputID := uuid.New()
 	outputFileName := fmt.Sprintf("%s.gif", outputID.String())
-	outputPath := fmt.Sprintf("%s/%s", destFolderPath, outputFileName)
+	outputPath := fmt.Sprintf("%s/%s", destDirPath, outputFileName)
 
-	billboardCreateCommand := utils.NewCommandBuilder().Billboard(imageFilePath, outputPath)
+	fastMode := ctx.DefaultPostForm("mode", "slow") == "fast"
+	billboardCreateCommand := utils.NewCommandBuilder(fastMode).Billboard(imageFilePath, outputPath)
 	err = billboardCreateCommand.Run()
 	if err != nil {
-		log.Error("Billboard gif make fail.", "err", err)
-		ctx.JSON(http.StatusInternalServerError, "Fail to create gif")
+		log.Error(messages.FailToGenerateGif, "err", err)
+		ctx.JSON(http.StatusInternalServerError, messages.FailToGenerateGif)
 		return
 	}
-	defer os.Remove(outputPath)
+	defer func() {
+		err := os.Remove(outputPath)
+		if err != nil {
+			log.Error(messages.FailToRemoveGifFile, "err", err)
+		}
+	}()
 
 	_, err = os.Stat(outputPath)
 	if err != nil {
-		log.Error("Billboard output check fail.", "err", err)
-		ctx.JSON(http.StatusInternalServerError, "Fail to create gif")
+		log.Error(messages.FailToGenerateGif, "err", err)
+		ctx.JSON(http.StatusInternalServerError, messages.FailToGenerateGif)
 		return
 	}
 	ctx.File(outputPath)

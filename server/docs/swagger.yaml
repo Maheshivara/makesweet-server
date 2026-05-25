@@ -19,6 +19,14 @@ paths:
         name: image
         required: true
         type: file
+      - default: slow
+        description: Gif mode, can be 'fast' or 'slow', default is 'slow'
+        enum:
+        - fast
+        - slow
+        in: formData
+        name: mode
+        type: string
       produces:
       - json image/gif
       responses:
@@ -48,6 +56,14 @@ paths:
         name: image
         required: true
         type: file
+      - default: slow
+        description: Gif mode, can be 'fast' or 'slow', default is 'slow'
+        enum:
+        - fast
+        - slow
+        in: formData
+        name: mode
+        type: string
       produces:
       - json image/gif
       responses:
@@ -72,7 +88,8 @@ paths:
       - multipart/form-data
       description: Use images and a template from form to make a custom gif
       parameters:
-      - description: A png or jpg image array
+      - collectionFormat: csv
+        description: A png or jpg image array
         in: formData
         items:
           type: file
@@ -84,6 +101,14 @@ paths:
         name: template
         required: true
         type: file
+      - default: slow
+        description: Gif mode, can be 'fast' or 'slow', default is 'slow'
+        enum:
+        - fast
+        - slow
+        in: formData
+        name: mode
+        type: string
       produces:
       - json image/gif
       responses:
@@ -113,6 +138,14 @@ paths:
         name: image
         required: true
         type: file
+      - default: slow
+        description: Gif mode, can be 'fast' or 'slow', default is 'slow'
+        enum:
+        - fast
+        - slow
+        in: formData
+        name: mode
+        type: string
       produces:
       - json image/gif
       responses:
@@ -142,6 +175,14 @@ paths:
         name: image
         required: true
         type: file
+      - default: slow
+        description: Gif mode, can be 'fast' or 'slow', default is 'slow'
+        enum:
+        - fast
+        - slow
+        in: formData
+        name: mode
+        type: string
       produces:
       - json image/gif
       responses:
@@ -185,6 +226,14 @@ paths:
         in: formData
         name: variant
         type: string
+      - default: slow
+        description: Gif mode, can be 'fast' or 'slow', default is 'slow'
+        enum:
+        - fast
+        - slow
+        in: formData
+        name: mode
+        type: string
       produces:
       - json image/gif
       responses:
@@ -224,6 +273,14 @@ paths:
         name: image-right
         required: true
         type: file
+      - default: slow
+        description: Gif mode, can be 'fast' or 'slow', default is 'slow'
+        enum:
+        - fast
+        - slow
+        in: formData
+        name: mode
+        type: string
       produces:
       - json image/gif
       responses:

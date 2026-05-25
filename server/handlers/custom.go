@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"fmt"
+	"makesweet/messages"
 	"makesweet/utils"
 	"net/http"
 	"os"
@@ -19,6 +20,7 @@ import (
 //	@Accept			mpfd
 //	@Param			images		formData	[]file	true	"A png or jpg image array"
 //	@Param			template	formData	file	true	"A zip template file"
+//	@Param			mode		formData	string	false	"Gif mode, can be 'fast' or 'slow', default is 'slow'"	Enums(fast,slow)	default(slow)
 //	@Produce		json image/gif
 //	@Success		200	{file}		binary	"Generated Gif"
 //	@Failure		400	{string}	string	"Fail to load images from form"
@@ -30,7 +32,12 @@ func CreateFromCustom(ctx *gin.Context) {
 		ctx.JSON(http.StatusInternalServerError, err.Error())
 		return
 	}
-	defer os.Remove(templatePath)
+	defer func() {
+		err := os.Remove(templatePath)
+		if err != nil {
+			log.Error(messages.FailToRemoveTemplateFile, "err", err)
+		}
+	}()
 
 	imagePaths, err := utils.SaveImagesFromContext(ctx, "images")
 	if err != nil {
@@ -42,33 +49,44 @@ func CreateFromCustom(ctx *gin.Context) {
 
 	defer func() {
 		for _, imagePath := range imagePaths {
-			os.Remove(imagePath)
+			err := os.Remove(imagePath)
+			if err != nil {
+				log.Error(messages.FailToRemoveImageFile, "err", err)
+			}
 		}
 	}()
 
 	if len(imagePaths) == 0 {
-		ctx.JSON(http.StatusBadRequest, "No images found in form")
+		ctx.JSON(http.StatusBadRequest, messages.NoImagesFoundInForm)
 		return
 	}
 
-	destFolderPath := os.Getenv("SAVE_IMAGE_FOLDER")
+	destDirPath := os.Getenv("SAVE_IMAGE_FOLDER")
 	outputID := uuid.New()
 	outputFileName := fmt.Sprintf("%s.gif", outputID.String())
-	outputPath := fmt.Sprintf("%s/%s", destFolderPath, outputFileName)
+	outputPath := fmt.Sprintf("%s/%s", destDirPath, outputFileName)
 
-	customCreateCommand := utils.NewCommandBuilder().CustomTemplate(templatePath, imagePaths, outputPath)
+	fastMode := ctx.DefaultPostForm("mode", "slow") == "fast"
+	customCreateCommand := utils.NewCommandBuilder(fastMode).CustomTemplate(templatePath, imagePaths, outputPath)
 	err = customCreateCommand.Run()
 	if err != nil {
-		log.Error("Custom gif make fail.", "err", err)
-		ctx.JSON(http.StatusInternalServerError, "Fail to create gif")
+		customErr := fmt.Sprintf(messages.ExecCommandFailed, "CustomTemplate")
+		log.Error(customErr, "err", err)
+		ctx.JSON(http.StatusInternalServerError, messages.FailToGenerateGif)
 		return
 	}
-	defer os.Remove(outputPath)
+	defer func() {
+		err := os.Remove(outputPath)
+		if err != nil {
+			log.Error(messages.FailToRemoveGifFile, "err", err)
+		}
+	}()
 
 	_, err = os.Stat(outputPath)
 	if err != nil {
-		log.Error("Custom output check fail.", "err", err)
-		ctx.JSON(http.StatusInternalServerError, "Fail to create gif")
+		customErr := fmt.Sprintf(messages.ExecCommandFailed, "CustomTemplate")
+		log.Error(customErr, "err", err)
+		ctx.JSON(http.StatusInternalServerError, messages.FailToGenerateGif)
 		return
 	}
 	ctx.File(outputPath)

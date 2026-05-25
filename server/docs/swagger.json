@@ -35,6 +35,17 @@
                         "name": "image",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "enum": [
+                            "fast",
+                            "slow"
+                        ],
+                        "type": "string",
+                        "default": "slow",
+                        "description": "Gif mode, can be 'fast' or 'slow', default is 'slow'",
+                        "name": "mode",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -79,6 +90,17 @@
                         "name": "image",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "enum": [
+                            "fast",
+                            "slow"
+                        ],
+                        "type": "string",
+                        "default": "slow",
+                        "description": "Gif mode, can be 'fast' or 'slow', default is 'slow'",
+                        "name": "mode",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -122,6 +144,7 @@
                         "items": {
                             "type": "file"
                         },
+                        "collectionFormat": "csv",
                         "description": "A png or jpg image array",
                         "name": "images",
                         "in": "formData",
@@ -133,6 +156,17 @@
                         "name": "template",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "enum": [
+                            "fast",
+                            "slow"
+                        ],
+                        "type": "string",
+                        "default": "slow",
+                        "description": "Gif mode, can be 'fast' or 'slow', default is 'slow'",
+                        "name": "mode",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -177,6 +211,17 @@
                         "name": "image",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "enum": [
+                            "fast",
+                            "slow"
+                        ],
+                        "type": "string",
+                        "default": "slow",
+                        "description": "Gif mode, can be 'fast' or 'slow', default is 'slow'",
+                        "name": "mode",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -221,6 +266,17 @@
                         "name": "image",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "enum": [
+                            "fast",
+                            "slow"
+                        ],
+                        "type": "string",
+                        "default": "slow",
+                        "description": "Gif mode, can be 'fast' or 'slow', default is 'slow'",
+                        "name": "mode",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -283,6 +339,17 @@
                         "description": "Variant of heart locket gif",
                         "name": "variant",
                         "in": "formData"
+                    },
+                    {
+                        "enum": [
+                            "fast",
+                            "slow"
+                        ],
+                        "type": "string",
+                        "default": "slow",
+                        "description": "Gif mode, can be 'fast' or 'slow', default is 'slow'",
+                        "name": "mode",
+                        "in": "formData"
                     }
                 ],
                 "responses": {
@@ -341,6 +408,17 @@
                         "name": "image-right",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "enum": [
+                            "fast",
+                            "slow"
+                        ],
+                        "type": "string",
+                        "default": "slow",
+                        "description": "Gif mode, can be 'fast' or 'slow', default is 'slow'",
+                        "name": "mode",
+                        "in": "formData"
                     }
                 ],
                 "responses": {

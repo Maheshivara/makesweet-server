@@ -2,7 +2,9 @@
 
 ## What is this?
 
-A server implementation of [paulfitz/makesweet](https://github.com/paulfitz/makesweet) meme gif generator using golang builded to be a microservice for a Discord bot
+A server implementation of [paulfitz/makesweet](https://github.com/paulfitz/makesweet) meme gif generator using golang builded to be a microservice for a Discord bot.
+
+This version uses a Python port of the original tool.
 
 ## Tools
 
@@ -28,8 +30,9 @@ This project uses the following tools
 ## How to use?
 
 1. Clone this repo to your desired location.
-2. Go to the `makesweet-server` folder.
+2. Go to the `makesweet-server` dir.
 3. Copy the `.env.example` file to a file named `.env` and modify the env value (if you want).
-4. Use the `docker compose up` command to run the compose.
-5. The server will run in http://localhost:8080/api.
-6. You can use Swagger UI to test the API or check the endpoints in http://localhost:8080/api/docs/index.html
+4. Initialize the submodule with `git submodule update --init`
+5. Use the `docker compose up` command to run the compose.
+6. The server will run in http://localhost:8080/api.
+7. You can use Swagger UI to test the API or check the endpoints in http://localhost:8080/api/docs/index.html
