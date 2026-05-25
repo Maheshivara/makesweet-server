@@ -18,11 +18,15 @@ type commandBuilder struct {
 type CommandBuilder interface {
 	Billboard(imagePath string, outputPath string) *exec.Cmd
 	Flag(imagePath string, outputPath string) *exec.Cmd
+	SkyFlag(imagePath string, outputPath string) *exec.Cmd
 	HeartLocket(leftImagePath string, rightImagePath string, outputPath string) *exec.Cmd
 	ChristmasHeartLocket(leftImagePath string, rightImagePath string, outputPath string) *exec.Cmd
 	Circuit(imagePath string, outputPath string) *exec.Cmd
 	Bear(imagePath string, outputPath string) *exec.Cmd
 	Doll(imageLeftPath string, imageMidPath string, imageRightPath string, outputPath string) *exec.Cmd
+	FortuneCookie(imagePath string, outputPath string) *exec.Cmd
+	Guitar(imagePath string, outputPath string) *exec.Cmd
+	Laptop(imagePath string, outputPath string) *exec.Cmd
 	CustomTemplate(templatePath string, imagePaths []string, outputPath string) *exec.Cmd
 }
 
@@ -45,6 +49,12 @@ func (c *commandBuilder) Flag(imagePath string, outputPath string) *exec.Cmd {
 	return cmd
 }
 
+func (c *commandBuilder) SkyFlag(imagePath string, outputPath string) *exec.Cmd {
+	images := []string{imagePath}
+	cmd := c.reanimateUsingTemplate(BaseTemplateDir+"/blue-sky-flag.zip", images, outputPath)
+	return cmd
+}
+
 func (c *commandBuilder) HeartLocket(leftImagePath string, rightImagePath string, outputPath string) *exec.Cmd {
 	images := []string{leftImagePath, rightImagePath}
 	cmd := c.reanimateUsingTemplate(BaseTemplateDir+"/heart-locket.zip", images, outputPath)
@@ -53,7 +63,7 @@ func (c *commandBuilder) HeartLocket(leftImagePath string, rightImagePath string
 
 func (c *commandBuilder) ChristmasHeartLocket(leftImagePath string, rightImagePath string, outputPath string) *exec.Cmd {
 	images := []string{leftImagePath, rightImagePath}
-	cmd := c.reanimateUsingTemplate(BaseTemplateDir+"/heart-locket-hat.zip", images, outputPath)
+	cmd := c.reanimateUsingTemplate(BaseTemplateDir+"/heart-hat.zip", images, outputPath)
 	return cmd
 }
 
@@ -65,13 +75,31 @@ func (c *commandBuilder) Circuit(imagePath string, outputPath string) *exec.Cmd 
 
 func (c *commandBuilder) Bear(imagePath string, outputPath string) *exec.Cmd {
 	images := []string{imagePath}
-	cmd := c.reanimateUsingTemplate(BaseTemplateDir+"/flying-bear.zip", images, outputPath)
+	cmd := c.reanimateUsingTemplate(BaseTemplateDir+"/bearplane.zip", images, outputPath)
 	return cmd
 }
 
 func (c *commandBuilder) Doll(imageLeftPath string, imageMidPath string, imageRightPath string, outputPath string) *exec.Cmd {
 	images := []string{imageLeftPath, imageMidPath, imageRightPath}
 	cmd := c.reanimateUsingTemplate(BaseTemplateDir+"/nesting-doll.zip", images, outputPath)
+	return cmd
+}
+
+func (c *commandBuilder) FortuneCookie(imagePath string, outputPath string) *exec.Cmd {
+	images := []string{imagePath}
+	cmd := c.reanimateUsingTemplate(BaseTemplateDir+"/fortune-cookie.zip", images, outputPath)
+	return cmd
+}
+
+func (c *commandBuilder) Guitar(imagePath string, outputPath string) *exec.Cmd {
+	images := []string{imagePath}
+	cmd := c.reanimateUsingTemplate(BaseTemplateDir+"/guitar.zip", images, outputPath)
+	return cmd
+}
+
+func (c *commandBuilder) Laptop(imagePath string, outputPath string) *exec.Cmd {
+	images := []string{imagePath}
+	cmd := c.reanimateUsingTemplate(BaseTemplateDir+"/laptop.zip", images, outputPath)
 	return cmd
 }
 

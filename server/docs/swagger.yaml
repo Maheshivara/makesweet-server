@@ -82,6 +82,43 @@ paths:
       summary: Create a circuit board gif
       tags:
       - Gif
+  /gif/cookie:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Use image from form to make a opening fortune cookie gif
+      parameters:
+      - description: A png or jpg image
+        in: formData
+        name: image
+        required: true
+        type: file
+      - default: slow
+        description: Gif mode, can be 'fast' or 'slow', default is 'slow'
+        enum:
+        - fast
+        - slow
+        in: formData
+        name: mode
+        type: string
+      produces:
+      - json image/gif
+      responses:
+        "200":
+          description: Generated Gif
+          schema:
+            type: file
+        "400":
+          description: Fail to load image from formData
+          schema:
+            type: string
+        "500":
+          description: Fail to generate gif
+          schema:
+            type: string
+      summary: Create a fortune cookie gif
+      tags:
+      - Gif
   /gif/custom:
     post:
       consumes:
@@ -138,6 +175,15 @@ paths:
         name: image
         required: true
         type: file
+      - default: normal
+        description: Variant of the flag gif, can be 'normal' or 'sky', default is
+          'normal'
+        enum:
+        - normal
+        - sky
+        in: formData
+        name: variant
+        type: string
       - default: slow
         description: Gif mode, can be 'fast' or 'slow', default is 'slow'
         enum:
@@ -201,6 +247,43 @@ paths:
       summary: Create a flying bear gif
       tags:
       - Gif
+  /gif/guitar:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Use image from form to make a rotating guitar gif
+      parameters:
+      - description: A png or jpg image
+        in: formData
+        name: image
+        required: true
+        type: file
+      - default: slow
+        description: Gif mode, can be 'fast' or 'slow', default is 'slow'
+        enum:
+        - fast
+        - slow
+        in: formData
+        name: mode
+        type: string
+      produces:
+      - json image/gif
+      responses:
+        "200":
+          description: Generated Gif
+          schema:
+            type: file
+        "400":
+          description: Fail to load image from formData
+          schema:
+            type: string
+        "500":
+          description: Fail to generate gif
+          schema:
+            type: string
+      summary: Create a guitar gif
+      tags:
+      - Gif
   /gif/heart-locket:
     post:
       consumes:
@@ -250,6 +333,43 @@ paths:
           schema:
             type: string
       summary: Create a heart locket gif
+      tags:
+      - Gif
+  /gif/laptop:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Use image from form to make a opening laptop gif
+      parameters:
+      - description: A png or jpg image
+        in: formData
+        name: image
+        required: true
+        type: file
+      - default: slow
+        description: Gif mode, can be 'fast' or 'slow', default is 'slow'
+        enum:
+        - fast
+        - slow
+        in: formData
+        name: mode
+        type: string
+      produces:
+      - json image/gif
+      responses:
+        "200":
+          description: Generated Gif
+          schema:
+            type: file
+        "400":
+          description: Fail to load image from formData
+          schema:
+            type: string
+        "500":
+          description: Fail to generate gif
+          schema:
+            type: string
+      summary: Create a laptop gif
       tags:
       - Gif
   /gif/nesting-doll:

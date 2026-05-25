@@ -60,6 +60,9 @@ func main() {
 	gifGroup.POST("/circuit", handlers.CreateCircuitGif)
 	gifGroup.POST("/nesting-doll", handlers.CreateDollGif)
 	gifGroup.POST("/flying-bear", handlers.CreateBearGif)
+	gifGroup.POST("/cookie", handlers.CreateCookieGif)
+	gifGroup.POST("/laptop", handlers.CreateLaptopGif)
+	gifGroup.POST("/guitar", handlers.CreateGuitarGif)
 	gifGroup.POST("/custom", handlers.CreateFromCustom)
 
 	apiGroup.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

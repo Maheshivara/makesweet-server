@@ -6,29 +6,26 @@ import (
 	"makesweet/utils"
 	"net/http"
 	"os"
-	"os/exec"
 
 	"github.com/charmbracelet/log"
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 )
 
-// CreateFlag
+// CreateGuitar
 //
-//	@Summary		Create a flag gif
-//	@Description	Use image from form to make a waving flag gif
+//	@Summary		Create a guitar gif
+//	@Description	Use image from form to make a rotating guitar gif
 //	@Tags			Gif
 //	@Accept			mpfd
 //	@Param			image	formData	file	true	"A png or jpg image"
-//	@Param			variant	formData	string	false	"Variant of the flag gif, can be 'normal' or 'sky', default is 'normal'"	Enums(normal,sky)	default(normal)
-//	@Param			mode	formData	string	false	"Gif mode, can be 'fast' or 'slow', default is 'slow'"						Enums(fast,slow)	default(slow)
+//	@Param			mode	formData	string	false	"Gif mode, can be 'fast' or 'slow', default is 'slow'"	Enums(fast,slow)	default(slow)
 //	@Produce		json image/gif
 //	@Success		200	{file}		binary	"Generated Gif"
 //	@Failure		400	{string}	string	"Fail to load image from formData"
 //	@Failure		500	{string}	string	"Fail to generate gif"
-//	@Router			/gif/flag [post]
-func CreateFlagGif(ctx *gin.Context) {
-	variant := ctx.DefaultPostForm("variant", "normal")
+//	@Router			/gif/guitar [post]
+func CreateGuitarGif(ctx *gin.Context) {
 	imageFilePath, err := utils.SaveImageFromContext(ctx, "image")
 	if err != nil {
 		expectedError := fmt.Sprintf(messages.FailToSaveImageInServer, "image")
@@ -52,17 +49,11 @@ func CreateFlagGif(ctx *gin.Context) {
 	outputPath := fmt.Sprintf("%s/%s", destDirPath, outputFileName)
 
 	fastMode := ctx.DefaultPostForm("mode", "slow") == "fast"
-	var flagCreateCommand *exec.Cmd
-	switch variant {
-	case "sky":
-		flagCreateCommand = utils.NewCommandBuilder(fastMode).SkyFlag(imageFilePath, outputPath)
-	default:
-		flagCreateCommand = utils.NewCommandBuilder(fastMode).Flag(imageFilePath, outputPath)
-	}
-	err = flagCreateCommand.Run()
+	guitarCreateCommand := utils.NewCommandBuilder(fastMode).Guitar(imageFilePath, outputPath)
+	err = guitarCreateCommand.Run()
 	if err != nil {
-		flagErr := fmt.Sprintf(messages.ExecCommandFailed, "Flag")
-		log.Error(flagErr, "err", err)
+		guitarErr := fmt.Sprintf(messages.ExecCommandFailed, "Guitar")
+		log.Error(guitarErr, "err", err)
 		ctx.JSON(http.StatusInternalServerError, messages.FailToGenerateGif)
 		return
 	}
@@ -75,8 +66,8 @@ func CreateFlagGif(ctx *gin.Context) {
 
 	_, err = os.Stat(outputPath)
 	if err != nil {
-		flagErr := fmt.Sprintf(messages.FailToGenerateSpecificGif, "Flag")
-		log.Error(flagErr, "err", err)
+		guitarErr := fmt.Sprintf(messages.FailToGenerateSpecificGif, "Guitar")
+		log.Error(guitarErr, "err", err)
 		ctx.JSON(http.StatusInternalServerError, messages.FailToGenerateGif)
 		return
 	}
