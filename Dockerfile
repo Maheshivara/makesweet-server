@@ -9,18 +9,20 @@ RUN go mod download
 COPY ./server/ .
 RUN go build -o makesweet-server .
 
-FROM base AS makesweet_builder
-RUN apk update && \
-  apk add --no-cache \
-  python3 \
+FROM python:3.14-slim AS makesweet_builder
+RUN apt-get update && \
+  apt-get install -y \
   pipx \
-  uv \
   binutils \
-  scons \
-  gcc \
-  musl-dev \
   patchelf && \
-  rm -rf /var/cache/apk/*
+  apt-get autoremove -y && \
+  apt-get clean && \
+  rm -rf /var/lib/apt/lists/*
+
+ENV PATH="/root/.local/bin:${PATH}"
+
+RUN pipx install uv
+RUN pipx install staticx
 
 WORKDIR /app
 
@@ -30,16 +32,15 @@ RUN uv sync --frozen
 COPY ./makesweet-py/src/ ./src/
 COPY ./makesweet-py/makesweet-py.spec ./
 RUN uv run pyinstaller makesweet-py.spec
+RUN staticx dist/makesweet-py dist/makesweet-py-static --strip
 
-RUN pipx run staticx dist/makesweet-py dist/makesweet-py-static --strip
 
-
-FROM scratch
+FROM gcr.io/distroless/cc AS final
 COPY --from=base /empty /tmp
 
 WORKDIR /bin
 COPY --from=server_builder /app/makesweet-server ./makesweet-server
-COPY --from=makesweet_builder  --chmod=+x /app/dist/makesweet-py-static ./makesweet-py
+COPY --from=makesweet_builder /app/dist/makesweet-py-static ./makesweet-py
 COPY ./templates/ /templates/
 
 EXPOSE 8080
