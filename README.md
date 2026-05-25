@@ -36,3 +36,6 @@ This project uses the following tools
 5. Use the `docker compose up` command to run the compose.
 6. The server will run in http://localhost:8080/api.
 7. You can use Swagger UI to test the API or check the endpoints in http://localhost:8080/api/docs/index.html
+
+### Compose override
+You can use a `compose.override.yml` file to set individuals params without needing to change the default [./compose.yml](./compose.yml).

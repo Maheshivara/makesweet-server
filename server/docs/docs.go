@@ -131,6 +131,61 @@ const docTemplate = `{
                 }
             }
         },
+        "/gif/cookie": {
+            "post": {
+                "description": "Use image from form to make a opening fortune cookie gif",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "json image/gif"
+                ],
+                "tags": [
+                    "Gif"
+                ],
+                "summary": "Create a fortune cookie gif",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "A png or jpg image",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "enum": [
+                            "fast",
+                            "slow"
+                        ],
+                        "type": "string",
+                        "default": "slow",
+                        "description": "Gif mode, can be 'fast' or 'slow', default is 'slow'",
+                        "name": "mode",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Generated Gif",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Fail to load image from formData",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Fail to generate gif",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/gif/custom": {
             "post": {
                 "description": "Use images and a template from form to make a custom gif",
@@ -217,6 +272,17 @@ const docTemplate = `{
                         "name": "image",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "enum": [
+                            "normal",
+                            "sky"
+                        ],
+                        "type": "string",
+                        "default": "normal",
+                        "description": "Variant of the flag gif, can be 'normal' or 'sky', default is 'normal'",
+                        "name": "variant",
+                        "in": "formData"
                     },
                     {
                         "enum": [
@@ -307,6 +373,61 @@ const docTemplate = `{
                 }
             }
         },
+        "/gif/guitar": {
+            "post": {
+                "description": "Use image from form to make a rotating guitar gif",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "json image/gif"
+                ],
+                "tags": [
+                    "Gif"
+                ],
+                "summary": "Create a guitar gif",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "A png or jpg image",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "enum": [
+                            "fast",
+                            "slow"
+                        ],
+                        "type": "string",
+                        "default": "slow",
+                        "description": "Gif mode, can be 'fast' or 'slow', default is 'slow'",
+                        "name": "mode",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Generated Gif",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Fail to load image from formData",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Fail to generate gif",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/gif/heart-locket": {
             "post": {
                 "description": "Use image-lef and image-right files from form to make a opening heart locket gif",
@@ -367,6 +488,61 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Fail to load image from form",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Fail to generate gif",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/gif/laptop": {
+            "post": {
+                "description": "Use image from form to make a opening laptop gif",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "json image/gif"
+                ],
+                "tags": [
+                    "Gif"
+                ],
+                "summary": "Create a laptop gif",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "A png or jpg image",
+                        "name": "image",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "enum": [
+                            "fast",
+                            "slow"
+                        ],
+                        "type": "string",
+                        "default": "slow",
+                        "description": "Gif mode, can be 'fast' or 'slow', default is 'slow'",
+                        "name": "mode",
+                        "in": "formData"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Generated Gif",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Fail to load image from formData",
                         "schema": {
                             "type": "string"
                         }
