@@ -1,0 +1,3 @@
+[submodule "makesweet-py"]
+	path = makesweet-py
+	url = https://github.com/Maheshivara/makesweet-py

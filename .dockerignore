@@ -1,9 +1,4 @@
 *
 !server/*
-!makesweet/templates/*
-!makesweet/src/*.cpp
-!makesweet/src/*.h
-!makesweet/src/*.c
-!makesweet/src/*.proto
-!makesweet/src/CMakeLists.txt
-!makesweet/CMakeLists.txt
+!templates/*
+!makesweet-py/*

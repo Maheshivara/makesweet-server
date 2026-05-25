@@ -1,78 +1,46 @@
-FROM ubuntu:18.04 AS base
+FROM golang:1.26-alpine AS base
+RUN mkdir -p /empty
 
-# Install shared dependencies
-RUN apt-get update &&\
-  apt-get install -y --no-install-recommends \
-  libgd-dev \
-  libzzip-dev\
-  libopencv-highgui-dev \
-  libjsoncpp-dev \
-  protobuf-compiler \
-  libprotobuf-dev \
-  libopencv-videoio-dev &&\
-  apt-get clean &&\
-  rm -rf /var/lib/apt/lists/*
+FROM base AS server_builder
+WORKDIR /app
+COPY ./server/go.mod ./server/go.sum ./
+RUN go mod download
 
-# Builder stage
-FROM base AS builder
+COPY ./server/ .
+RUN go build -o makesweet-server .
 
-# Install build dependencies
-RUN apt-get update &&\
-  apt-get install -y --no-install-recommends\
-  build-essential \
-  cmake \
-  wget \
-  software-properties-common &&\
-  add-apt-repository ppa:longsleep/golang-backports && \
-  apt-get update &&\
-  apt-get install -y --no-install-recommends\
-  golang-go &&\
-  rm -rf /var/lib/apt/lists/*
+FROM base AS makesweet_builder
+RUN apk update && \
+  apk add --no-cache \
+  python3 \
+  pipx \
+  uv \
+  binutils \
+  scons \
+  gcc \
+  musl-dev \
+  patchelf && \
+  rm -rf /var/cache/apk/*
 
-# Download and build YARP
-RUN cd /tmp && \
-  wget https://github.com/robotology/yarp/archive/v2.3.72.tar.gz && \
-  tar xzvf v2.3.72.tar.gz && \
-  mkdir /yarp && \
-  cd /yarp && \
-  cmake -DSKIP_ACE=TRUE /tmp/yarp-* && \
-  make
+WORKDIR /app
 
-# Build makesweet
-COPY ./makesweet/src /makesweet/src
-COPY ./makesweet/CMakeLists.txt /makesweet/CMakeLists.txt
-RUN cd /makesweet && \
-  mkdir build && \
-  cd build && \
-  cmake -DUSE_OPENCV=ON -DUSE_DETAIL=ON -DYARP_DIR=/yarp .. && \
-  make VERBOSE=1
+COPY ./makesweet-py/pyproject.toml ./makesweet-py/uv.lock ./
+RUN uv sync --frozen
 
-# Create reanimator script
-RUN echo "#!/bin/bash" > /reanimator && \
-  echo "/makesweet/build/bin/reanimator \"\$@\"" >> /reanimator && \
-  chmod u+x /reanimator
+COPY ./makesweet-py/src/ ./src/
+COPY ./makesweet-py/makesweet-py.spec ./
+RUN uv run pyinstaller makesweet-py.spec
 
-# Build server
-COPY ./server/go.mod /server/go.mod
-COPY ./server/go.sum /server/go.sum
-RUN cd /server &&\
-  go mod download
+RUN pipx run staticx dist/makesweet-py dist/makesweet-py-static --strip
 
-COPY ./server /server
-RUN cd /server &&\
-  go build -o /server/start .
 
-# Final stage
-FROM base
+FROM scratch
+COPY --from=base /empty /tmp
 
-# Copy built files from the builder stage
-COPY --from=builder /yarp/ /yarp/
-COPY --from=builder /makesweet/build/ /makesweet/build/
-COPY --from=builder /reanimator /reanimator
-COPY --from=builder /server/start /server/start
+WORKDIR /bin
+COPY --from=server_builder /app/makesweet-server ./makesweet-server
+COPY --from=makesweet_builder  --chmod=+x /app/dist/makesweet-py-static ./makesweet-py
+COPY ./templates/ /templates/
 
-# Copy templates
-COPY ./makesweet/templates/ /makesweet/templates/
-
-# Set entrypoint
-ENTRYPOINT ["/server/start"]
+EXPOSE 8080
+ENTRYPOINT ["/bin/makesweet-server"]

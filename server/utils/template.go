@@ -27,11 +27,11 @@ func SaveTemplateFromContext(ctx *gin.Context, fieldName string) (string, error)
 		return "", errors.New(errMsg)
 	}
 
-	destFolderPath := os.Getenv("SAVE_TEMPLATE_FOLDER")
+	destDirPath := os.Getenv("SAVE_TEMPLATE_FOLDER")
 	templateID := uuid.New()
 	templateExtension := "zip"
 	templateFileName := fmt.Sprintf("%s.%s", templateID.String(), templateExtension)
-	destPath := fmt.Sprintf("%s/%s", destFolderPath, templateFileName)
+	destPath := fmt.Sprintf("%s/%s", destDirPath, templateFileName)
 
 	err = ctx.SaveUploadedFile(template, destPath)
 	if err != nil {
