@@ -8,7 +8,7 @@ This version uses a Python port of the original tool.
 
 ## Tools
 
-This project uses the following tools
+This project uses the following tools:
 
 <div>
   <table>
@@ -39,3 +39,11 @@ This project uses the following tools
 
 ### Compose override
 You can use a `compose.override.yml` file to set individuals params without needing to change the default [./compose.yml](./compose.yml).
+
+## Credits
+All templates in ./templates are based on assets from Makesweet website: https://makesweet.com/.
+
+The core of this project, including the mathematical logic still used in makesweet-py, was inspired by and adapted from Paul Fitzpatrick’s original Makesweet project:
+https://github.com/paulfitz/makesweet.
+
+Special thanks to all contributors and maintainers of the open-source libraries that made this project possible.
